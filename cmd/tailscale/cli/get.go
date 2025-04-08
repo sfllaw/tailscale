@@ -29,10 +29,28 @@ Only one setting will be printed.
 
 SETTINGS
 ` + getSettings.settings(),
-	FlagSet:   newFlagSet("get"),
+	FlagSet:   getFlagSet,
 	Exec:      runGet,
 	UsageFunc: usageFuncNoDefaultValues,
 }
+
+type getArgsT struct {
+	json bool
+}
+
+func newGetFlagSet(getArgs *getArgsT) *flag.FlagSet {
+	getf := newFlagSet("get")
+
+	// TODO: Actually parse the --json flag
+	getf.BoolVar(&getArgs.json, "json", false, "output JSON")
+
+	return getf
+}
+
+var (
+	getArgs    getArgsT
+	getFlagSet = newGetFlagSet(&getArgs)
+)
 
 type getSettingsT map[string]string
 
